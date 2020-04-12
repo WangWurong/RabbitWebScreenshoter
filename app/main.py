@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, jsonify, make_response
 import subprocess
 import time
 
@@ -14,6 +14,33 @@ def screenshot():
 	timestamp = int(time.time()*1000.0)
 	filename = 'images/' + request.args.get('username') + '_' + str(timestamp) + '.png'
 	process = subprocess.run('phantomjs app/generator.js ' + url + ' ' + filename, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+	
+	# TODO: store the log in file
 	print(process.stdout)
 	print(process.stderr)
-	return send_file('../' + filename, mimetype='image/png')
+
+	# return the img url
+	domain = request.host_url + '/image?imagename=' + filename
+	response = make_response(jsonify({'imageurl': domain}), 200)
+	response.headers["Access-Control-Allow-Origin"] = "*"
+	response.headers["content-type"] = "application/json; charset=utf8"
+	return response
+
+
+# serve the image
+@app.route('/image', methods=['GET'])
+def getImage():
+	imagename = request.args.get('imagename')
+	response = make_response(send_file('../' + imagename, mimetype='image/png'), 200)
+	response.headers["Access-Control-Allow-Origin"] = "*"
+	response.headers["content-type"] = "image/png"
+	return response
+
+
+# TODO: store the images in db and support the delete method
+# request to delete the image
+# @app.route('/delete', methods=['GET'])
+# def deleteImage():
+# 	imagename = request.args.get('imagename')
+# 	# delete the image 
+# 	return send_file('../' + imagename, mimetype='image/png')
