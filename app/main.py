@@ -37,6 +37,16 @@ def getImage():
 	return response
 
 
+# mock the api for testing
+@app.route('/mock', methods=['GET'])
+def mock():
+	# return the img url
+	mockUrl = "https://rabbit-web-screenshoter.herokuapp.com//image?imagename=images/carmen_w.k_1586728086020.png"
+	response = make_response(jsonify({'imageurl': mockUrl}), 200)
+	response.headers["Access-Control-Allow-Origin"] = "*"
+	response.headers["content-type"] = "application/json; charset=utf8"
+	return response
+
 # TODO: store the images in db and support the delete method
 # request to delete the image
 # @app.route('/delete', methods=['GET'])
