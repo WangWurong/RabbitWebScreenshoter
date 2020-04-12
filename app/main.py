@@ -42,6 +42,7 @@ def getImage():
 def mock():
 	# return the img url
 	mockUrl = "https://rabbit-web-screenshoter.herokuapp.com//image?imagename=images/carmen_w.k_1586728086020.png"
+	time.sleep(5)
 	response = make_response(jsonify({'imageurl': mockUrl}), 200)
 	response.headers["Access-Control-Allow-Origin"] = "*"
 	response.headers["content-type"] = "application/json; charset=utf8"
