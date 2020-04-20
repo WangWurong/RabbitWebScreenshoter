@@ -41,7 +41,8 @@ def getImage():
 @app.route('/mock', methods=['GET'])
 def mock():
 	# return the img url
-	mockUrl = "https://rabbit-web-screenshoter.herokuapp.com//image?imagename=images/carmen_w.k_1586728086020.png"
+	mockUrl = "http://127.0.0.1:5000/image?imagename=mock/carmen_w.k_1586728086020.png"
+	# mockUrl = "https://rabbit-web-screenshoter.herokuapp.com//image?imagename=mock/carmen_w.k_1586728086020.png"
 	time.sleep(5)
 	response = make_response(jsonify({'imageurl': mockUrl}), 200)
 	response.headers["Access-Control-Allow-Origin"] = "*"
